@@ -27,10 +27,7 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
+        <Route path="/register" element={<Navigate to="/login" replace />} />
         <Route
           path="/participants/new"
           element={
