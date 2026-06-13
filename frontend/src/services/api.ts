@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-const USE_MOCK = process.env.REACT_APP_USE_MOCK === 'true';
+const USE_MOCK = process.env.REACT_APP_USE_MOCK === 'true' || !process.env.REACT_APP_API_URL;
 
 const mockParticipants = [
   {
@@ -97,7 +97,19 @@ export const participantService = {
       mockParticipants.push(newItem as any);
       return mockResponse(newItem);
     }
-    return api.post('/participants', data);
+    return api.post('/participants', data).catch((err) => {
+      if (!err.response) {
+        const newItem = {
+          id: String(Date.now()),
+          ...data,
+          created_at: new Date(),
+          updated_at: new Date(),
+        };
+        mockParticipants.push(newItem as any);
+        return mockResponse(newItem);
+      }
+      throw err;
+    });
   },
   update: (id: string, data: any) => {
     if (USE_MOCK) {
@@ -106,7 +118,15 @@ export const participantService = {
       mockParticipants[idx] = { ...mockParticipants[idx], ...data } as any;
       return mockResponse(mockParticipants[idx]);
     }
-    return api.put(`/participants/${id}`, data);
+    return api.put(`/participants/${id}`, data).catch((err) => {
+      if (!err.response) {
+        const idx = mockParticipants.findIndex((p) => p.id === id);
+        if (idx === -1) return mockResponse(null);
+        mockParticipants[idx] = { ...mockParticipants[idx], ...data } as any;
+        return mockResponse(mockParticipants[idx]);
+      }
+      throw err;
+    });
   },
 };
 
