@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { NewParticipantPage } from './pages/NewParticipantPage';
+import ParticipantPage from './pages/ParticipantPage';
 import { OnboardingPage } from './pages/OnboardingPage';
 import { RegisterPage } from './pages/RegisterPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
@@ -26,6 +27,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <NewParticipantPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/participants/:id"
+          element={
+            <PrivateRoute>
+              <ParticipantPage />
             </PrivateRoute>
           }
         />
