@@ -22,22 +22,8 @@ function AppContent() {
         <Route path="/login" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/register" element={<Navigate to="/login" replace />} />
-        <Route
-          path="/participants/new"
-          element={
-            <PrivateRoute>
-              <NewParticipantPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/participants/:id"
-          element={
-            <PrivateRoute>
-              <ParticipantPage />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/participants/new" element={<NewParticipantPage />} />
+        <Route path="/participants/:id" element={<ParticipantPage />} />
         <Route
           path="/onboarding/:participantId"
           element={
