@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunnyday Carers — NDIS Participant Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --sun-gold: #F4A623;
+    --sun-gold-light: #FEF3DC;
+    --sun-gold-dark: #C17D12;
+    --sky: #2E7FD4;
+    --sky-light: #EAF2FB;
+    --sky-dark: #1A5A9A;
+    --sage: #3A8C6E;
+    --sage-light: #E8F5EF;
+    --sage-dark: #255C47;
+    --coral: #E05C3B;
+    --coral-light: #FDEEE9;
+    --lavender: #7B5EA7;
+    --lavender-light: #F0EBF9;
+    --surface: #FFFFFF;
+    --surface-2: #F7F8FA;
+    --surface-3: #EEF0F4;
+    --text-1: #1A1D23;
+    --text-2: #4A5068;
+    --text-3: #8A93A8;
+    --border: #E2E6ED;
+    --border-strong: #C8CDD8;
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--surface-2); color: var(--text-1); min-height: 100vh; }
+
+  /* Layout */
+  .app { display: flex; min-height: 100vh; }
+  .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
+  .main { margin-left: 260px; flex: 1; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+  .logo-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 38px; height: 38px; background: var(--sun-gold); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .logo-text { line-height: 1.2; }
+  .logo-text strong { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 15px; color: var(--text-1); }
+  .logo-text span { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+  .sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 10px; }
+  .nav-section { margin-bottom: 20px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 10px 6px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--radius-sm); cursor: pointer; text-decoration: none; color: var(--text-2); font-size: 13.5px; font-weight: 500; transition: all 0.15s; margin-bottom: 2px; border: 1px solid transparent; }
+  .nav-item:hover { background: var(--surface-2); color: var(--text-1); }
+  .nav-item.active { background: var(--sun-gold-light); color: var(--sun-gold-dark); border-color: rgba(244,166,35,0.2); }
+  .nav-item i { font-size: 17px; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: var(--coral); color: #fff; font-size: 10px; font-weight: 600; border-radius: 100px; padding: 1px 6px; }
+  .sidebar-footer { padding: 12px 10px; border-top: 1px solid var(--border); }
+  .user-card { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sky-light); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--sky-dark); flex-shrink: 0; }
+  .user-info strong { display: block; font-size: 12px; color: var(--text-1); }
+  .user-info span { font-size: 11px; color: var(--text-3); }
+
+  /* Top bar */
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .page-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-1); }
+  .page-sub { font-size: 13px; color: var(--text-3); }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-1); transition: all 0.15s; text-decoration: none; }
+  .btn:hover { background: var(--surface-2); }
+  .btn-primary { background: var(--sun-gold); border-color: var(--sun-gold-dark); color: #fff; }
+  .btn-primary:hover { background: var(--sun-gold-dark); }
+  .btn-sky { background: var(--sky); border-color: var(--sky-dark); color: #fff; }
+  .btn-sky:hover { background: var(--sky-dark); }
+  .btn-sage { background: var(--sage); border-color: var(--sage-dark); color: #fff; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn i { font-size: 15px; }
+
+  /* Page content */
+  .page-content { padding: 24px 28px; }
+  .hidden { display: none !important; }
+
+  /* Stats row */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; }
+  .stat-label { font-size: 12px; color: var(--text-3); font-weight: 500; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .stat-label i { font-size: 14px; }
+  .stat-value { font-size: 28px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-1); }
+  .stat-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+  .stat-accent { border-left: 3px solid var(--sun-gold); }
+  .stat-accent-sky { border-left: 3px solid var(--sky); }
+  .stat-accent-sage { border-left: 3px solid var(--sage); }
+  .stat-accent-coral { border-left: 3px solid var(--coral); }
+
+  /* Table */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
+  .search-bar { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 12px; }
+  .search-bar input { border: none; background: none; outline: none; font-size: 13px; color: var(--text-1); width: 200px; }
+  .search-bar i { font-size: 15px; color: var(--text-3); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 16px; text-align: left; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface-2); }
+  .participant-name { font-weight: 600; color: var(--text-1); font-size: 13px; }
+  .participant-ndis { font-size: 11px; color: var(--text-3); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .name-cell { display: flex; align-items: center; gap: 10px; }
+
+  /* Badges */
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 100px; }
+  .badge-gold { background: var(--sun-gold-light); color: var(--sun-gold-dark); }
+  .badge-sky { background: var(--sky-light); color: var(--sky-dark); }
+  .badge-sage { background: var(--sage-light); color: var(--sage-dark); }
+  .badge-coral { background: var(--coral-light); color: var(--coral); }
+  .badge-lavender { background: var(--lavender-light); color: var(--lavender); }
+  .badge-gray { background: var(--surface-3); color: var(--text-2); }
+  .badge i { font-size: 10px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+  .dot-active { background: var(--sage); }
+  .dot-onboarding { background: var(--sun-gold); }
+  .dot-review { background: var(--coral); }
+  .dot-inactive { background: var(--text-3); }
+
+  /* Modal */
+  .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius-xl); width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-md); }
+  .modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--surface); z-index: 10; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+  .modal-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 17px; font-weight: 700; }
+  .modal-close { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); cursor: pointer; color: var(--text-3); border: 1px solid transparent; }
+  .modal-close:hover { background: var(--surface-2); color: var(--text-1); border-color: var(--border); }
+  .modal-body { padding: 20px 24px; }
+  .modal-footer { padding: 14px 24px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: center; gap: 0; margin-bottom: 24px; }
+  .step { display: flex; align-items: center; flex: 1; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; border: 2px solid var(--border); background: var(--surface); color: var(--text-3); }
+  .step.active .step-num { border-color: var(--sun-gold); background: var(--sun-gold); color: #fff; }
+  .step.done .step-num { border-color: var(--sage); background: var(--sage); color: #fff; }
+  .step.done .step-num::after { content: '✓'; font-size: 11px; }
+  .step.done .step-num span { display: none; }
+  .step-label { font-size: 11px; font-weight: 500; margin-left: 7px; color: var(--text-3); white-space: nowrap; }
+  .step.active .step-label { color: var(--text-1); }
+  .step.done .step-label { color: var(--sage-dark); }
+  .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 4px; }
+  .step.done + .step-line { background: var(--sage); }
+
+  /* Forms */
+  .form-section { margin-bottom: 22px; }
+  .form-section-title { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 7px; }
+  .form-section-title i { color: var(--sun-gold); font-size: 16px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-full { grid-column: 1 / -1; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--text-2); }
+  .field label .req { color: var(--coral); margin-left: 2px; }
+  .field input, .field select, .field textarea { padding: 8px 11px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-1); background: var(--surface); outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.15s; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(46,127,212,0.1); }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .field-hint { font-size: 11px; color: var(--text-3); }
+  .field-error { font-size: 11px; color: var(--coral); display: none; }
+  .field.error input, .field.error select { border-color: var(--coral); }
+  .field.error .field-error { display: block; }
+
+  /* Service selection cards */
+  .service-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .service-card { border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; transition: all 0.2s; position: relative; }
+  .service-card:hover { border-color: var(--sun-gold); background: var(--sun-gold-light); }
+  .service-card.selected { border-color: var(--sun-gold); background: var(--sun-gold-light); }
+  .service-card.selected::after { content: '✓'; position: absolute; top: 10px; right: 12px; font-size: 13px; font-weight: 700; color: var(--sun-gold-dark); }
+  .service-card-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 20px; }
+  .sc-gold { background: var(--sun-gold-light); color: var(--sun-gold-dark); }
+  .sc-sky { background: var(--sky-light); color: var(--sky-dark); }
+  .sc-sage { background: var(--sage-light); color: var(--sage-dark); }
+  .service-card h4 { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+  .service-card p { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+
+  /* CP provider choice */
+  .cp-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .cp-option { border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 14px; cursor: pointer; transition: all 0.2s; }
+  .cp-option:hover { border-color: var(--sky); }
+  .cp-option.selected { border-color: var(--sky); background: var(--sky-light); }
+  .cp-option h4 { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+  .cp-option p { font-size: 11px; color: var(--text-2); }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); }
+  .check-item.done { background: var(--sage-light); border-color: rgba(58,140,110,0.25); }
+  .check-item.pending { background: var(--sun-gold-light); border-color: rgba(244,166,35,0.25); }
+  .check-item.missing { background: var(--coral-light); border-color: rgba(224,92,59,0.2); }
+  .check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 11px; }
+  .ci-done { background: var(--sage); color: #fff; }
+  .ci-pending { background: var(--sun-gold); color: #fff; }
+  .ci-missing { background: var(--coral); color: #fff; }
+  .check-text strong { display: block; font-size: 12px; font-weight: 600; color: var(--text-1); }
+  .check-text span { font-size: 11px; color: var(--text-2); }
+
+  /* Profile detail */
+  .profile-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
+  .profile-sidebar { display: flex; flex-direction: column; gap: 14px; }
+  .profile-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .profile-hero { background: linear-gradient(135deg, var(--sun-gold-light) 0%, #fff 100%); padding: 20px; text-align: center; border-bottom: 1px solid var(--border); }
+  .profile-avatar-lg { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; margin: 0 auto 10px; }
+  .profile-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; }
+  .profile-ndis { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .profile-body { padding: 14px; }
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--text-3); font-weight: 500; }
+  .info-val { color: var(--text-1); font-weight: 500; text-align: right; }
+  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+  .tab { padding: 9px 14px; font-size: 13px; font-weight: 500; color: var(--text-3); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .tab.active { color: var(--sky-dark); border-bottom-color: var(--sky); }
+  .tab:hover { color: var(--text-1); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* NDIS plan budget */
+  .budget-bar-wrap { margin: 8px 0 4px; }
+  .budget-bar { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; }
+  .budget-fill { height: 100%; border-radius: 4px; }
+  .support-item { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .support-item:last-child { border-bottom: none; }
+
+  /* Notes/timeline */
+  .note-item { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
+  .note-item:last-child { border-bottom: none; }
+  .note-dot-col { display: flex; flex-direction: column; align-items: center; }
+  .note-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sky); flex-shrink: 0; margin-top: 4px; }
+  .note-line { width: 1px; background: var(--border); flex: 1; margin-top: 4px; }
+  .note-content strong { font-size: 12px; font-weight: 600; color: var(--text-1); }
+  .note-content p { font-size: 12px; color: var(--text-2); margin-top: 2px; line-height: 1.5; }
+  .note-meta { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+
+  /* Alert */
+  .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 12px; margin-bottom: 14px; }
+  .alert-warning { background: var(--sun-gold-light); border: 1px solid rgba(244,166,35,0.3); color: var(--sun-gold-dark); }
+  .alert-info { background: var(--sky-light); border: 1px solid rgba(46,127,212,0.2); color: var(--sky-dark); }
+  .alert-success { background: var(--sage-light); border: 1px solid rgba(58,140,110,0.25); color: var(--sage-dark); }
+  .alert i { font-size: 16px; flex-shrink: 0; margin-top: 0; }
+
+  /* Compliance */
+  .compliance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .compliance-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
+  .compliance-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 8px; }
+  .compliance-item h4 { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; }
+  .compliance-item p { font-size: 11px; color: var(--text-2); line-height: 1.5; }
+
+  /* Quick actions row */
+  .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+  .quick-action { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); cursor: pointer; font-size: 11px; font-weight: 500; color: var(--text-2); transition: all 0.15s; min-width: 80px; }
+  .quick-action i { font-size: 22px; }
+  .quick-action:hover { border-color: var(--sun-gold); background: var(--sun-gold-light); color: var(--sun-gold-dark); }
+  .qa-gold i { color: var(--sun-gold-dark); }
+  .qa-sky i { color: var(--sky-dark); }
+  .qa-sage i { color: var(--sage-dark); }
+  .qa-coral i { color: var(--coral); }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 48px 20px; }
+  .empty-state i { font-size: 40px; color: var(--text-3); margin-bottom: 10px; display: block; }
+  .empty-state h3 { font-size: 15px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; color: var(--text-3); }
+
+  /* Segment control */
+  .segment { display: inline-flex; background: var(--surface-3); border-radius: var(--radius-sm); padding: 3px; gap: 2px; }
+  .seg-btn { padding: 5px 12px; border-radius: 4px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-2); transition: all 0.15s; border: none; background: none; }
+  .seg-btn.active { background: var(--surface); color: var(--text-1); box-shadow: var(--shadow); }
+
+  /* Responsive adjustments */
+  @media (max-width: 1100px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .compliance-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .service-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a class="logo-mark" href="#">
+        <div class="logo-icon">☀️</div>
+        <div class="logo-text">
+          <strong>Sunnyday Carers</strong>
+          <span>NDIS Provider</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Overview</div>
+        <a class="nav-item active" onclick="showPage('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+        <a class="nav-item" onclick="showPage('participants')"><i class="ti ti-users"></i> Participants <span class="nav-badge" id="nav-badge">86</span></a>
+        <a class="nav-item" onclick="showPage('onboarding')"><i class="ti ti-user-plus"></i> Onboarding</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Services</div>
+        <a class="nav-item" onclick="showPage('group-homes')"><i class="ti ti-building-community"></i> Group Homes (SIL)</a>
+        <a class="nav-item" onclick="showPage('in-home')"><i class="ti ti-home-heart"></i> In Home Care</a>
+        <a class="nav-item" onclick="showPage('day-program')"><i class="ti ti-calendar-event"></i> Day Program</a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Compliance</div>
+        <a class="nav-item" onclick="showPage('compliance')"><i class="ti ti-shield-check"></i> NDIS Compliance</a>
+        <a class="nav-item" onclick="showPage('reports')"><i class="ti ti-report"></i> Reports</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">SM</div>
+        <div class="user-info">
+          <strong>Sarah Mitchell</strong>
+          <span>Support Coordinator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Dashboard -->
+    <div id="page-dashboard">
+      <div class="topbar">
+        <div class="topbar-left">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-sub" id="dashboard-date-sub">Welcome back, Sarah</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-sky" onclick="openModal('saModal')"><i class="ti ti-file-description"></i> Service Agreement</button>
+          <button class="btn btn-primary" onclick="openModal('onboardingModal')"><i class="ti ti-user-plus"></i> New Participant</button>
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="stats-grid">
+          <div class="stat-card stat-accent">
+            <div class="stat-label"><i class="ti ti-users"></i> Total Participants</div>
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-sub" id="stat-total-sub"></div>
+          </div>
+          <div class="stat-card stat-accent-sky">
+            <div class="stat-label"><i class="ti ti-clock"></i> Pending Onboarding</div>
+            <div class="stat-value" id="stat-onboarding">—</div>
+            <div class="stat-sub" id="stat-onboarding-sub"></div>
+          </div>
+          <div class="stat-card stat-accent-sage">
+            <div class="stat-label"><i class="ti ti-building-community"></i> SIL Participants</div>
+            <div class="stat-value" id="stat-sil">—</div>
+            <div class="stat-sub" id="stat-sil-sub"></div>
+          </div>
+          <div class="stat-card stat-accent-coral">
+            <div class="stat-label"><i class="ti ti-alert-triangle"></i> Compliance Alerts</div>
+            <div class="stat-value" id="stat-alerts">—</div>
+            <div class="stat-sub" id="stat-alerts-sub"></div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <div class="quick-action qa-gold" onclick="openModal('onboardingModal')"><i class="ti ti-user-plus"></i>New Participant</div>
+          <div class="quick-action qa-sky" onclick="showPage('participants')"><i class="ti ti-users"></i>View All</div>
+          <div class="quick-action" style="border-color:rgba(46,127,212,0.3);background:var(--sky-light)" onclick="openModal('saModal')"><i class="ti ti-file-description" style="color:var(--sky-dark)"></i><span style="color:var(--sky-dark)">Service Agreement</span></div>
+          <div class="quick-action qa-sage" onclick="showPage('compliance')"><i class="ti ti-shield-check"></i>Compliance</div>
+          <div class="quick-action qa-coral" onclick="showPage('reports')"><i class="ti ti-report"></i>Run Report</div>
+          <div class="quick-action qa-sky" onclick="showPage('in-home')"><i class="ti ti-home-heart"></i>In Home Care</div>
+          <div class="quick-action qa-sage" onclick="showPage('day-program')"><i class="ti ti-calendar-event"></i>Day Program</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Recent Participants</span>
+              <button class="btn btn-sm" onclick="showPage('participants')">View all <i class="ti ti-arrow-right"></i></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Participant</th><th>Service</th><th>Status</th></tr></thead>
+                <tbody id="dashboard-recent-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><span class="card-title">Compliance Tasks</span></div>
+            <div style="padding:12px 14px;">
+              <div class="check-item missing" data-alert="missing">
+                <div class="check-icon ci-missing">!</div>
+                <div class="check-text"><strong>Haseen Khawaja — Service Agreement</strong><span>Service agreement not yet generated. Complete onboarding to create.</span></div>
+              </div>
+              <div style="height:8px"></div>
+              <div class="check-item pending" data-alert="pending">
+                <div class="check-icon ci-pending">~</div>
+                <div class="check-text"><strong>Trevour Vernables — Support Plan</strong><span>Initial support plan required before service commencement.</span></div>
+              </div>
+              <div style="height:8px"></div>
+              <div class="check-item pending" data-alert="pending">
+                <div class="check-icon ci-pending">~</div>
+                <div class="check-text"><strong>Worker Screening</strong><span>Verify all assigned support workers hold valid NDIS clearances.</span></div>
+              </div>
+              <div style="height:8px"></div>
+              <div class="check-item pending" data-alert="pending">
+                <div class="check-icon ci-pending">~</div>
+                <div class="check-text"><strong>Consent Forms</strong><span>Privacy, photo, and emergency consents to be collected for new participants.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /page-dashboard -->
+
+    <!-- Participants -->
+    <div id="page-participants" class="hidden">
+      <div class="topbar">
+        <div class="topbar-left">
+          <div class="page-title">Participants</div>
+        </div>
+        <div class="topbar-right">
+          <div class="search-bar"><i class="ti ti-search"></i><input placeholder="Search by name or NDIS number…" oninput="filterTable(this.value)"></div>
+          <button class="btn" onclick="openModal('importModal')"><i class="ti ti-file-import"></i> Import</button>
+          <button class="btn btn-primary" onclick="openModal('onboardingModal')"><i class="ti ti-user-plus"></i> New Participant</button>
+        </div>
+      </div>
+      <div class="page-content">
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+          <div class="segment" id="segment-bar">
+            <button class="seg-btn active" onclick="filterService('all',this)">All</button>
+            <button class="seg-btn" onclick="filterService('sil',this)">SIL</button>
+            <button class="seg-btn" onclick="filterService('inhome',this)">In Home</button>
+            <button class="seg-btn" onclick="filterService('day',this)">Day Program</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="participantTable">
+              <thead><tr>
+                <th>Participant</th><th>DOB</th><th>Service Type</th><th>CP Provider</th><th>Plan End</th><th>Status</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="participantBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Participant Profile -->
+    <div id="page-profile" class="hidden">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-sm" onclick="showPage('participants')"><i class="ti ti-arrow-left"></i> Back</button>
+          <div style="margin-left:8px">
+            <div class="page-title" id="profileName"></div>
+            <div class="page-sub" id="profileNdis"></div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn" onclick="openEditParticipant(currentProfileId)"><i class="ti ti-edit"></i> Edit</button>
+          <button class="btn btn-sky" onclick="openModal('saModal')"><i class="ti ti-file-description"></i> Service Agreement</button>
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="profile-grid">
+          <div class="profile-sidebar">
+            <div class="profile-card" id="profileCard">
+              <div class="profile-hero">
+                <div class="profile-avatar-lg" id="prof-avatar"></div>
+                <div class="profile-name" id="prof-name"></div>
+                <div class="profile-ndis" id="prof-ndis"></div>
+                <div style="margin-top:8px" id="prof-status-badge"></div>
+              </div>
+              <div class="profile-body" id="prof-details"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title"><i class="ti ti-phone" style="font-size:14px;margin-right:5px;"></i>Contacts</span></div>
+              <div class="profile-body" id="prof-contacts"></div>
+            </div>
+          </div>
+          <div>
+            <div class="tabs">
+              <div class="tab active" onclick="switchTab('plan', this)">NDIS Plan</div>
+              <div class="tab" onclick="switchTab('compliance', this)">Compliance</div>
+              <div class="tab" onclick="switchTab('notes', this)">Notes &amp; History</div>
+              <div class="tab" onclick="switchTab('support', this)">Support Team</div>
+            </div>
+            <div class="tab-panel active" id="tab-plan">
+              <div class="alert alert-info" id="prof-plan-alert" style="display:none"><i class="ti ti-info-circle"></i><span id="prof-plan-alert-text"></span></div>
+              <div class="card">
+                <div class="card-header"><span class="card-title">Funding Summary</span></div>
+                <div style="padding:14px" id="prof-funding"><div style="text-align:center;padding:24px;color:var(--text-3);font-size:13px">No funding data recorded yet. Edit this participant to add plan details.</div></div>
+              </div>
+            </div>
+            <div class="tab-panel" id="tab-compliance">
+              <div class="checklist" id="prof-compliance-list"></div>
+            </div>
+            <div class="tab-panel" id="tab-notes">
+              <div class="card" style="padding:14px 16px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                  <span style="font-size:13px;font-weight:600">Activity log</span>
+                  <button class="btn btn-sm btn-sky"><i class="ti ti-plus"></i> Add note</button>
+                </div>
+                <div id="prof-notes"></div>
+              </div>
+            </div>
+            <div class="tab-panel" id="tab-support">
+              <div class="card">
+                <div class="card-header"><span class="card-title">Assigned support workers</span><button class="btn btn-sm btn-primary"><i class="ti ti-plus"></i> Assign</button></div>
+                <table>
+                  <thead><tr><th>Worker</th><th>Role</th><th>Screening</th><th>Rostered days</th></tr></thead>
+                  <tbody id="prof-support-body"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:20px;font-size:13px">No support workers assigned yet</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- In Home Care -->
+    <div id="page-in-home" class="hidden">
+      <div class="topbar"><div class="topbar-left"><div class="page-title">In Home Care</div></div></div>
+      <div class="page-content">
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card stat-accent-sky"><div class="stat-label">In Home Participants</div><div class="stat-value" id="inhome-count">—</div><div class="stat-sub">Active service agreements</div></div>
+          <div class="stat-card stat-accent-sage"><div class="stat-label">Hours this week</div><div class="stat-value">284</div><div class="stat-sub">Across all participants</div></div>
+          <div class="stat-card stat-accent"><div class="stat-label">Open shifts</div><div class="stat-value">6</div><div class="stat-sub">Require rostering</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">In Home Care Participants</span></div>
+          <table>
+            <thead><tr><th>Participant</th><th>NDIS Number</th><th>Address</th><th>Plan End</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="inhome-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day Program -->
+    <div id="page-day-program" class="hidden">
+      <div class="topbar"><div class="topbar-left"><div class="page-title">Day Program</div></div></div>
+      <div class="page-content">
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card stat-accent-sage"><div class="stat-label">Day Program Participants</div><div class="stat-value" id="day-count">—</div></div>
+          <div class="stat-card stat-accent"><div class="stat-label">Sessions this week</div><div class="stat-value">5</div></div>
+          <div class="stat-card stat-accent-sky"><div class="stat-label">Attendance rate</div><div class="stat-value">92%</div><div class="stat-sub">Last 30 days</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Day Program Participants</span><button class="btn btn-sm btn-primary"><i class="ti ti-plus"></i> Schedule session</button></div>
+          <table>
+            <thead><tr><th>Participant</th><th>NDIS Number</th><th>Plan End</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="day-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance -->
+    <div id="page-compliance" class="hidden">
+      <div class="topbar"><div class="topbar-left"><div class="page-title">NDIS Compliance</div></div></div>
+      <div class="page-content">
+        <div class="alert alert-warning"><i class="ti ti-alert-triangle"></i><strong>86 participants imported</strong> — Review all participant records and complete outstanding onboarding tasks.</div>
+        <div class="compliance-grid" style="margin-bottom:18px">
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--sage-light);color:var(--sage-dark)"><i class="ti ti-shield-check"></i></div><h4>Worker Screening</h4><p>All active support workers hold valid NDIS Worker Screening clearances. Next bulk review Dec 2026.</p><div style="margin-top:8px"><span class="badge badge-sage">47/47 cleared</span></div></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--sky-light);color:var(--sky-dark)"><i class="ti ti-file-description"></i></div><h4>Service Agreements</h4><p>Service agreements must be signed before supports commence. 1 pending signature.</p><div style="margin-top:8px"><span class="badge badge-sky">46/47 signed</span></div></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--sun-gold-light);color:var(--sun-gold-dark)"><i class="ti ti-calendar-check"></i></div><h4>Plan Currency</h4><p>NDIS plans must be current and within funding period. Proactive review management required.</p><div style="margin-top:8px"><span class="badge badge-coral">1 expiring soon</span></div></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--sage-light);color:var(--sage-dark)"><i class="ti ti-alert-circle"></i></div><h4>Incident Reporting</h4><p>All reportable incidents submitted to NDIS Commission within 24h (serious) or 5 days (other).</p><div style="margin-top:8px"><span class="badge badge-sage">0 open incidents</span></div></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--lavender-light);color:var(--lavender)"><i class="ti ti-lock"></i></div><h4>Privacy &amp; Consent</h4><p>Privacy notices, photo consents, and emergency treatment authorisations on file for all participants.</p><div style="margin-top:8px"><span class="badge badge-sage">47/47 complete</span></div></div>
+          <div class="compliance-item"><div class="compliance-icon" style="background:var(--coral-light);color:var(--coral)"><i class="ti ti-certificate"></i></div><h4>Registration Standards</h4><p>Sunnyday Carers meets all NDIS Practice Standards for registration groups. Audit due Nov 2026.</p><div style="margin-top:8px"><span class="badge badge-gold">Audit Nov 2026</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div id="page-reports" class="hidden">
+      <div class="topbar"><div class="topbar-left"><div class="page-title">Reports</div></div></div>
+      <div class="page-content">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <div class="card" style="cursor:pointer;transition:box-shadow 0.15s" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'"><div style="padding:18px"><div style="font-size:22px;margin-bottom:8px"><i class="ti ti-users" style="color:var(--sky-dark)"></i></div><div style="font-weight:600;margin-bottom:4px">Participant Summary</div><div style="font-size:12px;color:var(--text-3)">Active, onboarding, and inactive participants by service type.</div></div></div>
+          <div class="card" style="cursor:pointer;transition:box-shadow 0.15s" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'"><div style="padding:18px"><div style="font-size:22px;margin-bottom:8px"><i class="ti ti-shield-check" style="color:var(--sage-dark)"></i></div><div style="font-weight:600;margin-bottom:4px">Compliance Status Report</div><div style="font-size:12px;color:var(--text-3)">Overview of service agreements, worker screening, and plan currency.</div></div></div>
+          <div class="card" style="cursor:pointer;transition:box-shadow 0.15s" onmouseover="this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.boxShadow='none'"><div style="padding:18px"><div style="font-size:22px;margin-bottom:8px"><i class="ti ti-chart-bar" style="color:var(--sun-gold-dark)"></i></div><div style="font-weight:600;margin-bottom:4px">Funding Utilisation</div><div style="font-size:12px;color:var(--text-3)">NDIS budget tracking across all support categories.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding page -->
+    <div id="page-onboarding" class="hidden">
+      <div class="topbar"><div class="topbar-left"><div class="page-title">Onboarding</div></div>
+      <div class="topbar-right"><button class="btn btn-primary" onclick="openModal('onboardingModal')"><i class="ti ti-user-plus"></i> Start New Onboarding</button></div></div>
+      <div class="page-content">
+        <div class="card">
+          <div class="card-header"><span class="card-title">In-progress onboardings</span></div>
+          <table>
+            <thead><tr><th>Participant</th><th>Started</th><th>Service</th><th>Step</th><th>Progress</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="name-cell"><div class="avatar" style="background:#E8F5EF;color:#255C47">AK</div><div><div class="participant-name">Amara Kowalski</div><div class="participant-ndis">43 108 654 321</div></div></div></td>
+                <td>2 Jun 2026</td>
+                <td><span class="badge badge-sky">In Home</span></td>
+                <td>Service Agreement</td>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="budget-bar" style="width:120px"><div class="budget-fill" style="width:60%;background:var(--sky)"></div></div><span style="font-size:11px;color:var(--text-3)">3/5</span></div></td>
+                <td><button class="btn btn-sm btn-sky">Continue</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group Homes (SIL) -->
+    <div id="page-group-homes" class="hidden">
+      <div class="topbar">
+        <div class="topbar-left"><div class="page-title">Group Homes (SIL)</div></div>
+        <div class="topbar-right">
+          <button class="btn btn-primary" onclick="openAddHouseModal()"><i class="ti ti-plus"></i> Add Group Home</button>
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="stats-grid" id="gh-stats" style="margin-bottom:18px"></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px" id="gh-cards-grid"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ====== EDIT PARTICIPANT MODAL ====== -->
+<div class="modal-backdrop" id="editParticipantModal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="ti ti-edit" style="color:var(--sky);font-size:18px;margin-right:8px;vertical-align:-2px"></i>Edit Participant — <span id="editParticipantTitle"></span></div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px">Update participant details · Sunnyday Carers</div>
+      </div>
+      <div class="modal-close" onclick="closeModal('editParticipantModal')"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-user"></i> Personal information</div>
+        <div class="form-grid">
+          <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="ep-first"></div>
+          <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="ep-last"></div>
+          <div class="field"><label>NDIS number <span class="req">*</span></label><input type="text" id="ep-ndis" placeholder="43X XXX XXX"></div>
+          <div class="field"><label>Date of birth</label><input type="text" id="ep-dob" placeholder="DD Mon YYYY"></div>
+          <div class="field"><label>Gender</label>
+            <select id="ep-gender"><option>Male</option><option>Female</option><option>Non-binary / gender diverse</option><option>Prefer not to say</option></select>
+          </div>
+          <div class="field"><label>Primary disability</label>
+            <select id="ep-disability"><option>Autism Spectrum Disorder</option><option>Intellectual Disability</option><option>Physical / mobility</option><option>Psychosocial</option><option>Acquired brain injury</option><option>Sensory (vision/hearing)</option><option>Multiple</option><option>Other</option></select>
+          </div>
+          <div class="field"><label>Phone</label><input type="tel" id="ep-phone" placeholder="04XX XXX XXX"></div>
+          <div class="field"><label>Email</label><input type="email" id="ep-email" placeholder="email@example.com"></div>
+          <div class="field form-full"><label>Residential address</label><input type="text" id="ep-address" placeholder="Street, suburb, state, postcode"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-checklist"></i> Service &amp; NDIS plan</div>
+        <div class="form-grid">
+          <div class="field"><label>Service type <span class="req">*</span></label>
+            <select id="ep-service" onchange="toggleEditCPField()">
+              <option value="sil_cp">SIL + CP (Coordination of Participants)</option>
+              <option value="sil">SIL only</option>
+              <option value="inhome">In Home Care</option>
+              <option value="day">Day Program</option>
+            </select>
+          </div>
+          <div class="field"><label>Plan management</label>
+            <select id="ep-plan-mgmt"><option>NDIA managed</option><option>Plan managed</option><option>Self managed</option></select>
+          </div>
+          <div class="field"><label>Plan start date</label><input type="text" id="ep-plan-start" placeholder="DD Mon YYYY"></div>
+          <div class="field"><label>Plan end date</label><input type="text" id="ep-plan-end" placeholder="DD Mon YYYY"></div>
+          <div class="field" id="ep-cp-field">
+            <label>CP provider</label>
+            <select id="ep-cp-provider"><option value="sunnyday">Sunnyday Carers</option><option value="external">External CP provider</option></select>
+            <span class="field-hint">Participant may choose Sunnyday Carers or an external CP provider.</span>
+          </div>
+          <div class="field" id="ep-cp-na-field" style="display:none">
+            <label>CP provider</label>
+            <div style="padding:8px 11px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-3)">Sunnyday Carers</div>
+            <span class="field-hint">CP provider choice only applies to SIL (Group Home) participants.</span>
+          </div>
+          <div class="field"><label>Status</label>
+            <select id="ep-status"><option value="active">Active</option><option value="onboarding">Onboarding</option><option value="review">Plan Review</option><option value="inactive">Inactive</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="form-section" id="ep-house-section" style="display:none">
+        <div class="form-section-title"><i class="ti ti-building-community"></i> Group Home Assignment</div>
+        <div class="form-grid">
+          <div class="field form-full">
+            <label>Group Home</label>
+            <select id="ep-group-home"><option value="">— Not assigned —</option></select>
+            <span class="field-hint">Select to assign or transfer this participant to a group home.</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-heart-handshake"></i> Guardian / authorised representative</div>
+        <div class="form-grid">
+          <div class="field"><label>Guardian name</label><input type="text" id="ep-gname" placeholder="Full name"></div>
+          <div class="field"><label>Relationship</label>
+            <select id="ep-grel"><option value="">None / not applicable</option><option>Parent</option><option>Sibling</option><option>Spouse/Partner</option><option>Legal guardian</option><option>Nominee</option></select>
+          </div>
+          <div class="field"><label>Guardian phone</label><input type="tel" id="ep-gphone" placeholder="04XX XXX XXX"></div>
+          <div class="field"><label>Guardian email</label><input type="email" id="ep-gemail" placeholder="email@example.com"></div>
+        </div>
+      </div>
+      <div class="form-section" style="margin-bottom:0">
+        <div class="form-section-title"><i class="ti ti-id-badge"></i> LAC / Support coordinator</div>
+        <div class="form-grid">
+          <div class="field"><label>LAC / coordinator name</label><input type="text" id="ep-lac" placeholder="Full name"></div>
+          <div class="field"><label>Organisation</label><input type="text" id="ep-lac-org" placeholder="Organisation name"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('editParticipantModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditParticipant()"><i class="ti ti-device-floppy"></i> Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ONBOARDING MODAL ====== -->
+<div class="modal-backdrop" id="onboardingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Participant Onboarding</div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px">NDIS compliant intake process · Sunnyday Carers</div>
+      </div>
+      <div class="modal-close" onclick="closeModal('onboardingModal')"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="stepper" id="stepper">
+        <div class="step active" id="step-1"><div class="step-num"><span>1</span></div><div class="step-label">Personal details</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="step-2"><div class="step-num"><span>2</span></div><div class="step-label">Service selection</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="step-3"><div class="step-num"><span>3</span></div><div class="step-label">NDIS plan</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="step-4"><div class="step-num"><span>4</span></div><div class="step-label">Documents</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="step-5"><div class="step-num"><span>5</span></div><div class="step-label">Consent &amp; review</div></div>
+      </div>
+      <div id="ob-step-1">
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-user"></i> Personal information</div>
+          <div class="form-grid">
+            <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="f-first" placeholder="Given name"></div>
+            <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="f-last" placeholder="Family name"></div>
+            <div class="field"><label>Date of birth <span class="req">*</span></label><input type="date" id="f-dob"></div>
+            <div class="field"><label>Gender</label><select id="f-gender"><option>Select…</option><option>Male</option><option>Female</option><option>Non-binary / gender diverse</option><option>Prefer not to say</option></select></div>
+            <div class="field form-full"><label>Residential address <span class="req">*</span></label><input type="text" placeholder="Street, suburb, state, postcode"></div>
+            <div class="field"><label>Phone</label><input type="tel" placeholder="04XX XXX XXX"></div>
+            <div class="field"><label>Email</label><input type="email" placeholder="email@example.com"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-heart-handshake"></i> Guardian / authorised representative</div>
+          <div class="form-grid">
+            <div class="field"><label>Guardian name</label><input type="text" placeholder="Full name"></div>
+            <div class="field"><label>Relationship</label><select><option>Select…</option><option>Parent</option><option>Sibling</option><option>Spouse/Partner</option><option>Legal guardian</option><option>Nominee</option></select></div>
+            <div class="field"><label>Guardian phone</label><input type="tel" placeholder="04XX XXX XXX"></div>
+            <div class="field"><label>Guardian email</label><input type="email" placeholder="email@example.com"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-stethoscope"></i> Disability &amp; support needs</div>
+          <div class="form-grid">
+            <div class="field"><label>Primary disability <span class="req">*</span></label><select><option>Select…</option><option>Autism Spectrum Disorder</option><option>Intellectual Disability</option><option>Physical / mobility</option><option>Psychosocial</option><option>Acquired brain injury</option><option>Sensory (vision/hearing)</option><option>Multiple</option><option>Other</option></select></div>
+            <div class="field"><label>Communication needs</label><select><option>Verbal</option><option>AAC / communication device</option><option>Auslan / sign language</option><option>Written only</option><option>Interpreter required</option></select></div>
+            <div class="field form-full"><label>Additional support needs / notes</label><textarea placeholder="Describe any specific support requirements, behaviours of concern, medical conditions, or other relevant information…"></textarea></div>
+          </div>
+        </div>
+      </div>
+      <div id="ob-step-2" class="hidden">
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-checklist"></i> Select service type</div>
+          <div class="service-cards">
+            <div class="service-card" onclick="selectService('sil', this)">
+              <div class="service-card-icon sc-gold"><i class="ti ti-building-community"></i></div>
+              <h4>Group Homes (SIL)</h4>
+              <p>Supported Independent Living in a shared house. 24/7 support available. Option to add Coordination of Participants.</p>
+            </div>
+            <div class="service-card" onclick="selectService('inhome', this)">
+              <div class="service-card-icon sc-sky"><i class="ti ti-home-heart"></i></div>
+              <h4>In Home Care</h4>
+              <p>Support provided in the participant's own home. Flexible hours including personal care, domestic, and social support.</p>
+            </div>
+            <div class="service-card" onclick="selectService('day', this)">
+              <div class="service-card-icon sc-sage"><i class="ti ti-calendar-event"></i></div>
+              <h4>Day Program</h4>
+              <p>Community-based activities, skills building, and social participation during daytime hours.</p>
+            </div>
+          </div>
+        </div>
+        <div id="cp-section" class="hidden" style="margin-top:18px">
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-sitemap"></i> Coordination of Participants (CP)</div>
+            <div class="alert alert-info" style="margin-bottom:10px"><i class="ti ti-info-circle"></i><span>Under the NDIS, participants have the right to choose their own CP provider. You may select Sunnyday Carers or nominate an external provider.</span></div>
+            <div class="cp-choice">
+              <div class="cp-option" onclick="selectCP('sunnyday',this)">
+                <h4>☀️ Sunnyday Carers</h4>
+                <p>Use Sunnyday Carers as the CP provider. Our coordination team will manage plan implementation, connect supports, and liaise with the NDIS.</p>
+              </div>
+              <div class="cp-option" onclick="selectCP('external',this)">
+                <h4><i class="ti ti-external-link" style="font-size:13px;vertical-align:-1px"></i> External CP provider</h4>
+                <p>The participant has chosen a different CP provider. Please enter provider details below for referral and coordination purposes.</p>
+              </div>
+            </div>
+            <div id="external-cp-fields" class="hidden" style="margin-top:12px">
+              <div class="form-grid">
+                <div class="field"><label>External CP provider name</label><input type="text" placeholder="Organisation name"></div>
+                <div class="field"><label>CP contact person</label><input type="text" placeholder="Full name"></div>
+                <div class="field"><label>CP phone</label><input type="tel" placeholder=""></div>
+                <div class="field"><label>CP email</label><input type="email" placeholder=""></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="sil-house-section" class="hidden" style="margin-top:12px">
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-home"></i> SIL house placement</div>
+            <div class="form-grid">
+              <div class="field"><label>Preferred house</label><select id="ob-house-select"><option value="">No preference</option></select></div>
+              <div class="field"><label>Preferred start date</label><input type="date"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="ob-step-3" class="hidden">
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-id-badge"></i> NDIS plan details</div>
+          <div class="form-grid">
+            <div class="field"><label>NDIS number <span class="req">*</span></label><input type="text" placeholder="43 XXX XXX XXX" id="f-ndis"></div>
+            <div class="field"><label>Plan management type <span class="req">*</span></label><select><option>NDIA managed (agency)</option><option>Plan managed</option><option>Self managed</option></select></div>
+            <div class="field"><label>Plan start date <span class="req">*</span></label><input type="date"></div>
+            <div class="field"><label>Plan end date <span class="req">*</span></label><input type="date"></div>
+            <div class="field"><label>LAC / support coordinator</label><input type="text" placeholder="Name of LAC or support coordinator"></div>
+            <div class="field"><label>LAC organisation</label><input type="text" placeholder="Organisation name"></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-coin"></i> Plan funding (estimated)</div>
+          <div class="form-grid form-grid-3">
+            <div class="field"><label>Core supports budget</label><input type="text" placeholder="$0.00"></div>
+            <div class="field"><label>Capacity building budget</label><input type="text" placeholder="$0.00"></div>
+            <div class="field"><label>Capital supports budget</label><input type="text" placeholder="$0.00"></div>
+          </div>
+        </div>
+      </div>
+      <div id="ob-step-4" class="hidden">
+        <div class="alert alert-warning"><i class="ti ti-alert-triangle"></i><span>All documents marked required must be collected before supports can commence, in accordance with NDIS Practice Standards.</span></div>
+        <div class="checklist">
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>NDIS plan (current) <span style="color:var(--coral)">*</span></strong><span>Upload current NDIS plan PDF from myplace portal</span></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0"><i class="ti ti-upload"></i> Upload</button></div>
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>Photo ID <span style="color:var(--coral)">*</span></strong><span>Passport, birth certificate, or driver's licence</span></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0"><i class="ti ti-upload"></i> Upload</button></div>
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>Service agreement <span style="color:var(--coral)">*</span></strong><span>Generated after service selection. Must be signed by participant or guardian.</span></div><button class="btn btn-sm btn-sky" style="margin-left:auto;flex-shrink:0"><i class="ti ti-file-plus"></i> Generate</button></div>
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>Support plan / risk assessment <span style="color:var(--coral)">*</span></strong><span>Initial support plan detailing goals and risk management</span></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0"><i class="ti ti-upload"></i> Upload</button></div>
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>Emergency contact form</strong><span>Preferred hospital, GP details, emergency contacts</span></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0"><i class="ti ti-upload"></i> Upload</button></div>
+          <div class="check-item pending"><div class="check-icon ci-pending">~</div><div class="check-text"><strong>Medical alert / medication form</strong><span>Current medications, allergies, medical conditions</span></div><button class="btn btn-sm" style="margin-left:auto;flex-shrink:0"><i class="ti ti-upload"></i> Upload</button></div>
+        </div>
+      </div>
+      <div id="ob-step-5" class="hidden">
+        <div class="alert alert-info"><i class="ti ti-info-circle"></i><span>Please confirm the following consents with the participant and/or their authorised representative before finalising onboarding.</span></div>
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-lock"></i> Privacy &amp; consent</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" style="margin-top:3px"> <span><strong>Privacy notice acknowledged</strong> — The participant has been provided with and understands Sunnyday Carers' Privacy Policy and how their personal information will be used.</span></label>
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" style="margin-top:3px"> <span><strong>Consent to share information</strong> — The participant consents to Sunnyday Carers sharing necessary information with the NDIS, support workers, and other service providers.</span></label>
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" style="margin-top:3px"> <span><strong>Photo / media consent</strong> — Consent has been obtained (or declined) regarding use of photos in reports and social media.</span></label>
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" style="margin-top:3px"> <span><strong>Emergency medical treatment</strong> — Emergency medical authorisation form has been completed and is on file.</span></label>
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer"><input type="checkbox" style="margin-top:3px"> <span><strong>Service agreement signed</strong> — Participant or authorised representative has signed the Sunnyday Carers service agreement.</span></label>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title"><i class="ti ti-user-check"></i> Onboarding confirmation</div>
+          <div class="form-grid">
+            <div class="field"><label>Intake completed by <span class="req">*</span></label><input type="text" value="Sarah Mitchell" placeholder="Staff name"></div>
+            <div class="field"><label>Intake date <span class="req">*</span></label><input type="date"></div>
+            <div class="field form-full"><label>Notes / additional comments</label><textarea placeholder="Any additional notes for the file…"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div><button class="btn" id="ob-back-btn" onclick="obStep(-1)" style="display:none"><i class="ti ti-arrow-left"></i> Back</button></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="ob-step-indicator" style="font-size:12px;color:var(--text-3)">Step 1 of 5</span>
+        <button class="btn btn-primary" id="ob-next-btn" onclick="obStep(1)">Next <i class="ti ti-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ADD / EDIT GROUP HOME MODAL ====== -->
+<div class="modal-backdrop" id="addHouseModal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="houseModalTitle"><i class="ti ti-building-community" style="color:var(--sun-gold);font-size:18px;margin-right:8px;vertical-align:-2px"></i>Add Group Home</div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px" id="houseModalSub">Register a new SIL group home · Sunnyday Carers</div>
+      </div>
+      <div class="modal-close" onclick="closeHouseModal()"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-home"></i> House details</div>
+        <div class="form-grid">
+          <div class="field form-full"><label>House name <span class="req">*</span></label><input type="text" id="gh-name" placeholder="e.g. Riverside House"></div>
+          <div class="field form-full"><label>Street address <span class="req">*</span></label><input type="text" id="gh-street" placeholder="Street number and name"></div>
+          <div class="field"><label>Suburb <span class="req">*</span></label><input type="text" id="gh-suburb" placeholder="Suburb"></div>
+          <div class="field"><label>State</label><select id="gh-state"><option>NSW</option><option>VIC</option><option>QLD</option><option>SA</option><option>WA</option><option>TAS</option><option>ACT</option><option>NT</option></select></div>
+          <div class="field"><label>Postcode</label><input type="text" id="gh-postcode" placeholder="0000" maxlength="4"></div>
+          <div class="field"><label>House phone</label><input type="tel" id="gh-phone" placeholder="02 XXXX XXXX"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-door"></i> Rooms &amp; occupancy</div>
+        <div class="form-grid">
+          <div class="field"><label>Total rooms <span class="req">*</span></label><input type="number" min="1" max="20" id="gh-rooms" placeholder="e.g. 5" oninput="recalcOccupancy()"></div>
+          <div class="field"><label>SIL model <span class="req">*</span></label>
+            <select id="gh-sil-model"><option value="">Select…</option><option value="SIL only">SIL only</option><option value="SIL + CP">SIL + CP (Coordination of Participants)</option></select>
+          </div>
+        </div>
+        <div id="gh-occupancy-summary" style="display:none;margin-top:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px">
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px">Occupancy breakdown</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px"><div style="font-size:22px;font-weight:700;color:var(--text-1)" id="occ-total">0</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">Total rooms</div></div>
+            <div style="background:var(--sky-light);border:1px solid rgba(46,127,212,0.2);border-radius:var(--radius-sm);padding:10px"><div style="font-size:22px;font-weight:700;color:var(--sky-dark)" id="occ-occupied">0</div><div style="font-size:11px;color:var(--sky-dark);margin-top:2px">Occupied</div></div>
+            <div style="background:var(--sage-light);border:1px solid rgba(58,140,110,0.25);border-radius:var(--radius-sm);padding:10px"><div style="font-size:22px;font-weight:700;color:var(--sage-dark)" id="occ-vacant">0</div><div style="font-size:11px;color:var(--sage-dark);margin-top:2px">Vacant</div></div>
+          </div>
+          <div style="margin-top:10px">
+            <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden"><div id="occ-bar" style="height:100%;background:var(--sky);border-radius:4px;transition:width 0.3s;width:0%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-top:4px"><span>0% occupied</span><span id="occ-pct">0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-id-badge"></i> Management &amp; staffing</div>
+        <div class="form-grid">
+          <div class="field"><label>House manager <span class="req">*</span></label><input type="text" id="gh-manager" placeholder="Full name"></div>
+          <div class="field"><label>House manager phone</label><input type="tel" id="gh-mgr-phone" placeholder="04XX XXX XXX"></div>
+          <div class="field"><label>Staffing ratio — weekday</label><select id="gh-ratio-day"><option>1:1 (individual)</option><option>1:2 (shared)</option><option>1:3 (shared)</option><option>1:4 (shared)</option></select></div>
+          <div class="field"><label>Staffing ratio — overnight</label><select id="gh-ratio-night"><option>Sleepover</option><option>Active overnight</option><option>1:2 active overnight</option></select></div>
+        </div>
+      </div>
+      <div class="form-section" style="margin-bottom:0">
+        <div class="form-section-title"><i class="ti ti-notes"></i> Additional notes</div>
+        <div class="field"><textarea id="gh-notes" placeholder="Accessibility features, proximity to services, transport, etc." style="min-height:70px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeHouseModal()">Cancel</button>
+      <button class="btn btn-primary" id="houseModalSaveBtn" onclick="saveHouse()"><i class="ti ti-building-community"></i> Add group home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== SERVICE AGREEMENT MODAL ====== -->
+<div class="modal-backdrop" id="saModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="ti ti-file-description" style="color:var(--sky);font-size:18px;margin-right:8px;vertical-align:-2px"></i>Generate Service Agreement</div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px">SIL &amp; CP · Sunnyday Carers</div>
+      </div>
+      <div class="modal-close" onclick="closeModal('saModal')"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="alert alert-info"><i class="ti ti-info-circle"></i><span>Select a participant and service type to pre-fill the agreement.</span></div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="field">
+          <label>Participant <span class="req">*</span></label>
+          <select id="sa-participant" onchange="prefillSA()">
+            <option value="">— Select participant —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Service type <span class="req">*</span></label>
+          <select id="sa-type"><option value="sil-cp">SIL + CP (Coordination of Participants)</option><option value="sil">SIL only</option></select>
+        </div>
+        <div id="sa-preview" style="display:none;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px">
+          <div style="font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Pre-fill preview</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
+            <div><span style="color:var(--text-3)">Name:</span> <strong id="prev-name">—</strong></div>
+            <div><span style="color:var(--text-3)">NDIS No:</span> <strong id="prev-ndis">—</strong></div>
+            <div><span style="color:var(--text-3)">DOB:</span> <strong id="prev-dob">—</strong></div>
+            <div><span style="color:var(--text-3)">Plan end:</span> <strong id="prev-plan">—</strong></div>
+          </div>
+        </div>
+        <div class="field"><label>Agreement start date</label><input type="date" id="sa-start-date"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('saModal')">Cancel</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sky" onclick="openSABlank()"><i class="ti ti-external-link"></i> Open blank SA</button>
+        <button class="btn btn-primary" onclick="generateSA()"><i class="ti ti-file-plus"></i> Generate &amp; open</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== IMPORT MODAL ====== -->
+<div class="modal-backdrop" id="importModal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title"><i class="ti ti-file-import" style="color:var(--sky);font-size:18px;margin-right:8px;vertical-align:-2px"></i>Import Participants</div>
+        <div style="font-size:12px;color:var(--text-3);margin-top:2px">Upload a CSV or Excel file to bulk-add participants</div>
+      </div>
+      <div class="modal-close" onclick="closeImportModal()"><i class="ti ti-x"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="stepper" id="import-stepper" style="margin-bottom:20px">
+        <div class="step active" id="imp-step-1"><div class="step-num"><span>1</span></div><div class="step-label">Upload file</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="imp-step-2"><div class="step-num"><span>2</span></div><div class="step-label">Review &amp; validate</div></div>
+        <div class="step-line"></div>
+        <div class="step" id="imp-step-3"><div class="step-num"><span>3</span></div><div class="step-label">Import</div></div>
+      </div>
+      <div id="imp-panel-1">
+        <div style="border:2px dashed var(--border);border-radius:var(--radius-lg);padding:36px 24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface-2)" id="dropZone"
+          onclick="document.getElementById('csvFileInput').click()"
+          ondragover="event.preventDefault();this.style.borderColor='var(--sky)';this.style.background='var(--sky-light)'"
+          ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--surface-2)'"
+          ondrop="handleFileDrop(event)">
+          <i class="ti ti-cloud-upload" style="font-size:40px;color:var(--text-3);display:block;margin-bottom:10px"></i>
+          <div style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:4px">Drop your file here or click to browse</div>
+          <div style="font-size:12px;color:var(--text-3)">Accepts .csv or .xlsx · Max 5 MB</div>
+          <input type="file" id="csvFileInput" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleFileSelect(this)">
+        </div>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:10px">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <span style="font-size:11px;color:var(--text-3)">OR DOWNLOAD THE TEMPLATE FIRST</span>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+          <div style="border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;background:#E8F5E9;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-file-spreadsheet" style="font-size:18px;color:#2E7D32"></i></div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text-1)">CSV Template</div><div style="font-size:11px;color:var(--text-3)">Works with Excel, Google Sheets</div></div>
+            <button class="btn btn-sm btn-sage" onclick="downloadTemplate('csv')"><i class="ti ti-download"></i> Download</button>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;background:#E3F2FD;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-file-type-xls" style="font-size:18px;color:#1565C0"></i></div>
+            <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text-1)">Excel Template (.xlsx)</div><div style="font-size:11px;color:var(--text-3)">Includes dropdown validation</div></div>
+            <button class="btn btn-sm btn-sky" onclick="downloadTemplate('xlsx')"><i class="ti ti-download"></i> Download</button>
+          </div>
+        </div>
+        <div style="margin-top:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px">
+          <div style="font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Required columns</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span style="font-size:11px;background:var(--coral-light);color:var(--coral);padding:3px 8px;border-radius:100px;font-weight:600">first_name *</span>
+            <span style="font-size:11px;background:var(--coral-light);color:var(--coral);padding:3px 8px;border-radius:100px;font-weight:600">last_name *</span>
+            <span style="font-size:11px;background:var(--coral-light);color:var(--coral);padding:3px 8px;border-radius:100px;font-weight:600">ndis_number *</span>
+            <span style="font-size:11px;background:var(--coral-light);color:var(--coral);padding:3px 8px;border-radius:100px;font-weight:600">dob *</span>
+            <span style="font-size:11px;background:var(--coral-light);color:var(--coral);padding:3px 8px;border-radius:100px;font-weight:600">service_type *</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">plan_start</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">plan_end</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">cp_provider</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">disability</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">guardian_name</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">guardian_phone</span>
+            <span style="font-size:11px;background:var(--surface-3);color:var(--text-2);padding:3px 8px;border-radius:100px">status</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:8px">service_type: <strong>sil</strong> · <strong>sil_cp</strong> · <strong>inhome</strong> · <strong>day</strong> &nbsp;|&nbsp; status: <strong>active</strong> · <strong>onboarding</strong> · <strong>review</strong></div>
+        </div>
+      </div>
+      <div id="imp-panel-2" style="display:none">
+        <div id="imp-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px"></div>
+        <div id="imp-errors" style="display:none;margin-bottom:12px"></div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px" id="imp-preview-label">Preview — first 10 rows</div>
+        <div style="overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-sm)">
+          <table style="width:100%;border-collapse:collapse;font-size:12px" id="imp-preview-table">
+            <thead id="imp-preview-head"></thead>
+            <tbody id="imp-preview-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="imp-panel-3" style="display:none;text-align:center;padding:32px 20px">
+        <div style="width:60px;height:60px;background:var(--sage-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:28px;color:var(--sage)">✓</div>
+        <div style="font-size:16px;font-weight:700;color:var(--text-1)" id="imp-done-title">Import complete</div>
+        <div style="font-size:13px;color:var(--text-3);margin-top:4px" id="imp-done-sub"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div><button class="btn" id="imp-back-btn" style="display:none" onclick="impGoStep(1)"><i class="ti ti-arrow-left"></i> Back</button></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="imp-file-name" style="font-size:12px;color:var(--text-3)"></span>
+        <button class="btn" onclick="closeImportModal()">Cancel</button>
+        <button class="btn btn-primary" id="imp-next-btn" style="display:none" onclick="impConfirm()"><i class="ti ti-database-import"></i> Import <span id="imp-count"></span> participants</button>
+        <button class="btn btn-sage" id="imp-done-btn" style="display:none" onclick="closeImportModal()"><i class="ti ti-check"></i> Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SheetJS for Excel support -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
