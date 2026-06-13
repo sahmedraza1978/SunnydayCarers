@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { NewParticipantPage } from './pages/NewParticipantPage';
 import { OnboardingPage } from './pages/OnboardingPage';
+import { RegisterPage } from './pages/RegisterPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import GroupHomesPage from './pages/GroupHomesPage';
 
@@ -25,6 +26,10 @@ function AppContent() {
               <DashboardPage />
             </PrivateRoute>
           }
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
         <Route
           path="/participants/new"

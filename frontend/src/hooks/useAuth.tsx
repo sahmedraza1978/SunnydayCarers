@@ -8,6 +8,7 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -34,6 +35,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const register = useCallback(async (email: string, password: string, firstName: string, lastName: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await authService.register(email, password, firstName, lastName);
+      setUser(response.data.data.user);
+      setAuthToken(response.data.data.token);
+    } catch (err: any) {
+      const message = err.response?.data?.error || 'Registration failed';
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     setUser(null);
     clearAuthToken();
@@ -47,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         error,
         login,
+        register,
         logout,
       }}
     >
