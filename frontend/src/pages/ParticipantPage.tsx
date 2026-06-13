@@ -20,6 +20,8 @@ const emptyParticipant: Participant = {
   emergency_contact_relationship: '',
   notes: '',
   status: 'active',
+  created_at: new Date(),
+  updated_at: new Date(),
 };
 
 export const ParticipantPage = () => {

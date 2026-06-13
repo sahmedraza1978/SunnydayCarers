@@ -11,6 +11,8 @@ const mockParticipants = [
     ndis_number: 'NDIS-1001',
     email: 'john.smith@example.com',
     status: 'active',
+    created_at: new Date(),
+    updated_at: new Date(),
   },
   {
     id: '2',
@@ -19,6 +21,8 @@ const mockParticipants = [
     ndis_number: 'NDIS-1002',
     email: 'mary.jones@example.com',
     status: 'inactive',
+    created_at: new Date(),
+    updated_at: new Date(),
   },
 ];
 
@@ -84,7 +88,12 @@ export const participantService = {
   },
   create: (data: any) => {
     if (USE_MOCK) {
-      const newItem = { id: String(Date.now()), ...data };
+      const newItem = {
+        id: String(Date.now()),
+        ...data,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
       mockParticipants.push(newItem as any);
       return mockResponse(newItem);
     }
