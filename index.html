@@ -295,6 +295,13 @@
 </style>
 </head>
 <body>
+<!-- Loading overlay shown while Supabase data loads -->
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,0.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:12px">
+  <div style="width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--sun-gold);border-radius:50%;animation:spin 0.7s linear infinite"></div>
+  <div style="font-size:13px;color:var(--text-3);font-weight:500">Loading participant data…</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
 <div class="app">
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -1115,6 +1122,10 @@
 
 <!-- SheetJS for Excel support -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!-- Supabase JS client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Project credentials — fill in config.js before deploying -->
+<script src="config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
