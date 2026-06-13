@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Agreement — Sunnyday Carers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.26.0/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --sun-gold: #F4A623;
+    --sun-gold-light: #FEF3DC;
+    --sun-gold-dark: #C17D12;
+    --sky: #2E7FD4;
+    --sky-light: #EAF2FB;
+    --sky-dark: #1A5A9A;
+    --sage: #3A8C6E;
+    --sage-light: #E8F5EF;
+    --sage-dark: #255C47;
+    --coral: #E05C3B;
+    --coral-light: #FDEEE9;
+    --text-1: #1A1D23;
+    --text-2: #4A5068;
+    --text-3: #8A93A8;
+    --border: #D8DCE6;
+    --surface: #FFFFFF;
+    --surface-2: #F7F8FA;
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--surface-2); color: var(--text-1); min-height: 100vh; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 12px; }
+  .logo-chip { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; color: var(--text-1); }
+  .logo-chip .sun { font-size: 20px; }
+  .doc-label { font-size: 13px; color: var(--text-2); padding-left: 12px; border-left: 1px solid var(--border); }
+  .toolbar-right { display: flex; align-items: center; gap: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-1); transition: all 0.15s; font-family: 'Inter', sans-serif; }
+  .btn:hover { background: var(--surface-2); }
+  .btn-primary { background: var(--sun-gold); border-color: var(--sun-gold-dark); color: #fff; }
+  .btn-primary:hover { background: var(--sun-gold-dark); }
+  .btn-sky { background: var(--sky); border-color: var(--sky-dark); color: #fff; }
+  .btn-sky:hover { background: var(--sky-dark); }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 100px; }
+  .badge-gold { background: var(--sun-gold-light); color: var(--sun-gold-dark); }
+  .badge-sky { background: var(--sky-light); color: var(--sky-dark); }
+
+  /* ── Edit mode controls ── */
+  .edit-bar {
+    background: var(--sky-light);
+    border-bottom: 1px solid rgba(46,127,212,0.2);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--sky-dark);
+  }
+  .edit-bar i { font-size: 15px; }
+  .edit-bar.hidden { display: none; }
+
+  /* ── Page shell ── */
+  .page-shell { padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+
+  /* ── Agreement document ── */
+  .agreement {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  /* Header / letterhead */
+  .ag-header {
+    background: linear-gradient(135deg, #1A1D23 0%, #2E3444 100%);
+    padding: 32px 40px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .ag-logo { display: flex; align-items: center; gap: 12px; }
+  .ag-logo-icon { width: 50px; height: 50px; background: var(--sun-gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+  .ag-logo-text strong { display: block; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 800; color: #fff; }
+  .ag-logo-text span { font-size: 12px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.08em; }
+  .ag-doc-meta { text-align: right; }
+  .ag-doc-type { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: var(--sun-gold); }
+  .ag-doc-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+  .ag-doc-num { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 8px; font-family: 'Inter', sans-serif; }
+
+  /* Gold accent strip */
+  .ag-strip { height: 4px; background: linear-gradient(90deg, var(--sun-gold) 0%, var(--sun-gold-dark) 60%, transparent 100%); }
+
+  /* Body */
+  .ag-body { padding: 36px 40px; }
+
+  /* Intro paragraph */
+  .ag-intro { font-size: 13px; line-height: 1.8; color: var(--text-2); margin-bottom: 28px; padding: 16px 18px; background: var(--surface-2); border-left: 3px solid var(--sun-gold); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .ag-intro strong { color: var(--text-1); }
+
+  /* Party blocks */
+  .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .party-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; background: var(--surface); }
+  .party-block.provider { border-top: 3px solid var(--sun-gold); }
+  .party-block.participant { border-top: 3px solid var(--sky); }
+  .party-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 10px; }
+  .party-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
+  .party-detail { font-size: 12px; color: var(--text-2); line-height: 1.9; }
+  .party-detail strong { color: var(--text-1); font-weight: 600; }
+
+  /* Editable fields */
+  .editable {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 1.5px dashed var(--border);
+    padding: 1px 4px;
+    color: var(--text-1);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    outline: none;
+  }
+  .editable:hover, .editable:focus { border-bottom-color: var(--sky); background: var(--sky-light); }
+  .editable.empty { color: var(--text-3); }
+  .editable[contenteditable="false"] { cursor: default; border-bottom-color: transparent; }
+  .editable[contenteditable="false"]:hover { background: none; }
+
+  /* Section */
+  .ag-section { margin-bottom: 28px; }
+  .ag-section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-1);
+    padding: 8px 0;
+    border-bottom: 2px solid var(--sun-gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ag-section-title i { color: var(--sun-gold); font-size: 16px; }
+  .ag-section-num { width: 22px; height: 22px; background: var(--text-1); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+  /* Services table */
+  .services-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+  .services-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); padding: 8px 12px; background: var(--surface-2); border: 1px solid var(--border); text-align: left; }
+  .services-table td { font-size: 12.5px; color: var(--text-2); padding: 10px 12px; border: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .services-table td strong { display: block; color: var(--text-1); font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+  .services-table tr:nth-child(even) td { background: #FAFBFC; }
+  .reg-num { font-size: 10px; color: var(--text-3); font-family: 'Inter', sans-serif; margin-top: 2px; }
+
+  /* Fees table */
+  .fees-table { width: 100%; border-collapse: collapse; }
+  .fees-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); padding: 8px 12px; background: var(--surface-2); border: 1px solid var(--border); text-align: left; }
+  .fees-table td { font-size: 12.5px; color: var(--text-2); padding: 10px 12px; border: 1px solid var(--border); }
+  .fees-table .total-row td { background: var(--sun-gold-light); font-weight: 700; color: var(--sun-gold-dark); }
+
+  /* Body text */
+  .ag-p { font-size: 12.5px; line-height: 1.85; color: var(--text-2); margin-bottom: 10px; }
+  .ag-p strong { color: var(--text-1); }
+  .ag-p.last { margin-bottom: 0; }
+
+  /* List */
+  .ag-list { list-style: none; padding: 0; margin: 0 0 10px; }
+  .ag-list li { font-size: 12.5px; color: var(--text-2); line-height: 1.75; padding: 4px 0 4px 20px; position: relative; }
+  .ag-list li::before { content: '•'; position: absolute; left: 6px; color: var(--sun-gold); font-size: 14px; line-height: 1.5; }
+  .ag-list.check li::before { content: '✓'; color: var(--sage); font-size: 11px; font-weight: 700; top: 5px; }
+
+  /* Alert box */
+  .ag-alert { display: flex; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 12px; font-size: 12px; line-height: 1.7; }
+  .ag-alert-info { background: var(--sky-light); border: 1px solid rgba(46,127,212,0.2); color: var(--sky-dark); }
+  .ag-alert-warn { background: var(--sun-gold-light); border: 1px solid rgba(244,166,35,0.3); color: var(--sun-gold-dark); }
+  .ag-alert i { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Sub-header */
+  .ag-sub { font-size: 12px; font-weight: 700; color: var(--text-1); text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 6px; }
+
+  /* Signature block */
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px; }
+  .sig-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .sig-party { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); margin-bottom: 10px; }
+  .sig-line-wrap { margin-bottom: 14px; }
+  .sig-line { border: none; border-bottom: 1.5px solid var(--border); display: block; width: 100%; padding: 6px 0; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; background: none; color: var(--text-1); outline: none; }
+  .sig-line::placeholder { color: var(--text-3); font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 400; }
+  .sig-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); margin-top: 3px; }
+  .sig-canvas-wrap { border: 1.5px dashed var(--border); border-radius: var(--radius-sm); height: 70px; display: flex; align-items: center; justify-content: center; color: var(--text-3); font-size: 12px; margin-bottom: 10px; cursor: pointer; transition: all 0.15s; }
+  .sig-canvas-wrap:hover { border-color: var(--sky); color: var(--sky); }
+
+  /* Footer */
+  .ag-footer { background: var(--surface-2); border-top: 1px solid var(--border); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-3); }
+  .ag-footer strong { color: var(--text-2); }
+
+  /* Period block */
+  .period-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; display: flex; align-items: center; gap: 20px; margin-bottom: 14px; }
+  .period-item { text-align: center; flex: 1; }
+  .period-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); margin-bottom: 4px; }
+  .period-value { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-1); }
+  .period-sep { font-size: 18px; color: var(--text-3); }
+
+  /* ── Print styles ── */
+  @media print {
+    body { background: #fff; }
+    .toolbar, .edit-bar, .page-shell > .print-spacer { display: none !important; }
+    .page-shell { padding: 0; max-width: 100%; }
+    .agreement { border: none; box-shadow: none; border-radius: 0; }
+    .editable[contenteditable="false"] { border-bottom-color: transparent; }
+    .btn { display: none; }
+    .sig-canvas-wrap { border-style: solid; }
+    .no-print { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Toolbar ── -->
+<div class="toolbar no-print">
+  <div class="toolbar-left">
+    <div class="logo-chip"><span class="sun">☀️</span> Sunnyday Carers</div>
+    <span class="doc-label" id="toolbar-doc-label">Service Agreement · SIL + CP</span>
+  </div>
+  <div class="toolbar-right">
+    <span id="toolbar-status" class="badge badge-gold">Draft</span>
+    <button class="btn" id="editToggleBtn" onclick="toggleEdit()"><i class="ti ti-edit"></i> Edit</button>
+    <button class="btn btn-sky" onclick="window.print()"><i class="ti ti-printer"></i> Print / Save PDF</button>
+    <button class="btn" onclick="window.close()"><i class="ti ti-x"></i> Close</button>
+  </div>
+</div>
+
+<!-- ── Edit bar ── -->
+<div class="edit-bar hidden" id="editBar">
+  <i class="ti ti-pencil"></i>
+  <strong>Edit mode</strong> — Click any field to update · Changes are not saved to server
+  <span style="margin-left:auto;display:flex;gap:8px">
+    <button class="btn" style="padding:4px 10px;font-size:12px" onclick="toggleEdit()"><i class="ti ti-check"></i> Done editing</button>
+  </span>
+</div>
+
+<!-- ── Document ── -->
+<div class="page-shell">
+<div class="agreement" id="agreementDoc">
+
+  <!-- Header -->
+  <div class="ag-header">
+    <div class="ag-logo">
+      <div class="ag-logo-icon">☀️</div>
+      <div class="ag-logo-text">
+        <strong>Sunnyday Carers</strong>
+        <span>NDIS Registered Provider</span>
+      </div>
+    </div>
+    <div class="ag-doc-meta">
+      <div class="ag-doc-type" id="doc-type-heading">SIL + CP SERVICE AGREEMENT</div>
+      <div class="ag-doc-sub">Supported Independent Living &amp; Coordination of Participants</div>
+      <div class="ag-doc-num" id="doc-ref-num">Ref: SC-<span id="ref-year">2026</span>-<span id="ref-seq">0001</span></div>
+    </div>
+  </div>
+  <div class="ag-strip"></div>
+
+  <!-- Body -->
+  <div class="ag-body">
+
+    <!-- Intro -->
+    <div class="ag-intro">
+      This <strong>Service Agreement</strong> is made under the <strong>National Disability Insurance Scheme Act 2013 (Cth)</strong> and sets out the agreed supports and responsibilities between <strong>Sunnyday Carers</strong> (the <em>Provider</em>) and the participant named below. Both parties commit to working together in a way that respects the participant's rights, goals, and choices.
+    </div>
+
+    <!-- Parties -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">1</div> Parties to this Agreement</div>
+      <div class="parties-grid">
+        <div class="party-block provider">
+          <div class="party-title">Service Provider</div>
+          <div class="party-name">Sunnyday Carers Pty Ltd</div>
+          <div class="party-detail">
+            <strong>ABN:</strong> 47 123 456 789<br>
+            <strong>NDIS Reg. No.:</strong> 4050052819<br>
+            <strong>Address:</strong> Level 2, 88 Parramatta Rd<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parramatta NSW 2150<br>
+            <strong>Phone:</strong> (02) 9876 5400<br>
+            <strong>Email:</strong> intake@sunnydaycarers.com.au
+          </div>
+        </div>
+        <div class="party-block participant">
+          <div class="party-title">Participant</div>
+          <div class="party-name"><span class="editable" id="p-name" contenteditable="false"></span></div>
+          <div class="party-detail">
+            <strong>NDIS Number:</strong> <span class="editable" id="p-ndis" contenteditable="false"></span><br>
+            <strong>Date of birth:</strong> <span class="editable" id="p-dob" contenteditable="false"></span><br>
+            <strong>Address:</strong> <span class="editable" id="p-address" contenteditable="false">Enter residential address</span><br>
+            <strong>Phone:</strong> <span class="editable" id="p-phone" contenteditable="false">Enter phone</span><br>
+            <strong>Email:</strong> <span class="editable" id="p-email" contenteditable="false">Enter email</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guardian row (shown if applicable) -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="guardian-row">
+        <div class="party-block" style="border-top:3px solid var(--sage)">
+          <div class="party-title">Authorised Representative / Guardian</div>
+          <div class="party-detail">
+            <strong>Name:</strong> <span class="editable" id="p-guardian" contenteditable="false">Full name (if applicable)</span><br>
+            <strong>Relationship:</strong> <span class="editable" id="p-guardian-rel" contenteditable="false">e.g. Parent / Legal guardian</span><br>
+            <strong>Phone:</strong> <span class="editable" id="p-guardian-phone" contenteditable="false">Phone number</span>
+          </div>
+        </div>
+        <div class="party-block" id="cp-provider-block" style="border-top:3px solid var(--lavender,#7B5EA7)">
+          <div class="party-title">Coordination of Participants (CP) Provider</div>
+          <div class="party-detail" id="cp-detail">
+            <strong>Provider:</strong> Sunnyday Carers Pty Ltd<br>
+            <strong>CP contact:</strong> <span class="editable" id="p-cp-contact" contenteditable="false">Coordinator name</span><br>
+            <strong>Phone:</strong> <span class="editable" id="p-cp-phone" contenteditable="false">(02) 9876 5400</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agreement period -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">2</div> Agreement Period</div>
+      <div class="period-box">
+        <div class="period-item">
+          <div class="period-label">Start date</div>
+          <div class="period-value"><span class="editable" id="p-start" contenteditable="false"></span></div>
+        </div>
+        <div class="period-sep">→</div>
+        <div class="period-item">
+          <div class="period-label">End date</div>
+          <div class="period-value"><span class="editable" id="p-end" contenteditable="false"></span></div>
+        </div>
+        <div class="period-sep">·</div>
+        <div class="period-item">
+          <div class="period-label">Plan managed by</div>
+          <div class="period-value"><span class="editable" id="p-plan-mgmt" contenteditable="false">NDIA managed</span></div>
+        </div>
+      </div>
+      <div class="ag-alert ag-alert-info">
+        <i class="ti ti-info-circle"></i>
+        This agreement aligns with the participant's current NDIS plan period. If the NDIS plan is replaced or reviewed before the end date, both parties agree to review and update this agreement accordingly.
+      </div>
+    </div>
+
+    <!-- Supports -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">3</div> Agreed Supports &amp; Services</div>
+      <div class="ag-p">Sunnyday Carers will provide the following funded supports in accordance with the participant's NDIS plan:</div>
+
+      <div id="sil-section">
+        <div class="ag-sub">A — Supported Independent Living (SIL)</div>
+        <table class="services-table">
+          <thead><tr>
+            <th style="width:26%">Support Item</th>
+            <th style="width:36%">Description</th>
+            <th style="width:18%">Support Category</th>
+            <th style="width:20%">Registration Group</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Daily Living Assistance</strong><div class="reg-num">01_002_0107_1_1</div></td>
+              <td>Assistance with daily personal activities including morning and evening routines, personal hygiene, dressing, grooming, meal preparation and medication administration as required.</td>
+              <td>Core Supports<br>Assistance with Daily Life</td>
+              <td>0107 — Specialist Disability Accommodation &amp; SIL</td>
+            </tr>
+            <tr>
+              <td><strong>Domestic Assistance</strong><div class="reg-num">01_019_0107_1_1</div></td>
+              <td>Assistance with household tasks including cleaning, laundry, shopping, and maintaining a safe and healthy living environment in the participant's home.</td>
+              <td>Core Supports<br>Assistance with Daily Life</td>
+              <td>0107 — SIL</td>
+            </tr>
+            <tr>
+              <td><strong>Community Access</strong><div class="reg-num">04_104_0125_6_1</div></td>
+              <td>Support to access and participate in community, social, recreational and civic activities of the participant's choice, including transport to and from activities.</td>
+              <td>Core Supports<br>Assistance with Social &amp; Community Participation</td>
+              <td>0125 — Participate Community</td>
+            </tr>
+            <tr>
+              <td><strong>24/7 Supported Housing</strong><div class="reg-num">01_700_0115_1_1</div></td>
+              <td>Provision of a suitable SIL group home environment including overnight support (sleepover or active, as specified in the participant's support plan), where applicable.</td>
+              <td>Core Supports</td>
+              <td>0115 — Daily Tasks / Shared Living</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="cp-section" style="margin-top:16px">
+        <div class="ag-sub">B — Coordination of Participants (CP)</div>
+        <table class="services-table">
+          <thead><tr>
+            <th style="width:26%">Support Item</th>
+            <th style="width:36%">Description</th>
+            <th style="width:18%">Support Category</th>
+            <th style="width:20%">Registration Group</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Support Coordination</strong><div class="reg-num">07_002_0106_8</div></td>
+              <td>Assistance to understand and implement the participant's NDIS plan, build capacity to direct their own supports, connect with mainstream, community and funded services, and resolve points of crisis.</td>
+              <td>Capacity Building<br>Support Coordination</td>
+              <td>0106 — Support Coordination</td>
+            </tr>
+            <tr>
+              <td><strong>Specialist Support Coordination</strong><div class="reg-num">07_004_0132_8</div></td>
+              <td>Higher-level coordination addressing complex support needs or barriers, including liaison with clinical, justice, and housing systems to strengthen plan implementation.</td>
+              <td>Capacity Building<br>Support Coordination</td>
+              <td>0132 — Specialist Support Coordination</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="ag-alert ag-alert-warn" style="margin-top:10px">
+          <i class="ti ti-alert-triangle"></i>
+          <span>The participant has the right to choose a different CP provider at any time. If the participant wishes to transfer CP services, 14 days written notice is requested to allow a smooth handover.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fees -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">4</div> Fees &amp; Funding</div>
+      <div class="ag-p">All fees are charged in accordance with the <strong>NDIS Pricing Arrangements and Price Limits</strong> current at the time of service delivery. The following rates apply:</div>
+      <table class="fees-table" style="margin-bottom:12px">
+        <thead><tr>
+          <th>Support type</th><th>Unit</th><th>Rate (incl. GST where applicable)</th><th>Estimated weekly hours</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>SIL — Weekday daytime</td><td>per hour</td><td><span class="editable" id="f-weekday" contenteditable="false">$59.81</span></td><td><span class="editable" id="f-wkd-hrs" contenteditable="false">25 hrs</span></td></tr>
+          <tr><td>SIL — Weekday evening</td><td>per hour</td><td><span class="editable" id="f-evening" contenteditable="false">$65.72</span></td><td><span class="editable" id="f-eve-hrs" contenteditable="false">7 hrs</span></td></tr>
+          <tr><td>SIL — Saturday</td><td>per hour</td><td><span class="editable" id="f-saturday" contenteditable="false">$83.99</span></td><td><span class="editable" id="f-sat-hrs" contenteditable="false">8 hrs</span></td></tr>
+          <tr><td>SIL — Sunday / Public Holiday</td><td>per hour</td><td><span class="editable" id="f-sunday" contenteditable="false">$108.17</span></td><td><span class="editable" id="f-sun-hrs" contenteditable="false">8 hrs</span></td></tr>
+          <tr><td>SIL — Sleepover</td><td>per night</td><td><span class="editable" id="f-sleepover" contenteditable="false">$256.00</span></td><td>7 nights</td></tr>
+          <tr id="cp-fee-row"><td>CP — Support Coordination</td><td>per hour</td><td><span class="editable" id="f-cp" contenteditable="false">$100.14</span></td><td><span class="editable" id="f-cp-hrs" contenteditable="false">2 hrs / fortnight</span></td></tr>
+          <tr class="total-row"><td colspan="2"><strong>Estimated weekly cost (SIL)</strong></td><td colspan="2"><strong><span class="editable" id="f-weekly-total" contenteditable="false">$2,400 — $2,800</span> per week</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="ag-alert ag-alert-info">
+        <i class="ti ti-info-circle"></i>
+        Exact fees depend on the participant's support hours and are reviewed with each NDIS plan cycle. Sunnyday Carers will provide an itemised statement within 5 business days of the end of each calendar month. Travel costs are charged separately at NDIS pricing rates.
+      </div>
+    </div>
+
+    <!-- Provider responsibilities -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">5</div> Provider Responsibilities</div>
+      <div class="ag-p">Sunnyday Carers commits to:</div>
+      <ul class="ag-list check">
+        <li>Deliver agreed supports safely, with skill, and in a timely manner</li>
+        <li>Treat the participant with dignity and respect at all times</li>
+        <li>Consult the participant on decisions that affect them, including who provides their supports and when</li>
+        <li>Give the participant information about all service options and assist them to make informed choices</li>
+        <li>Maintain the privacy and confidentiality of the participant's personal information in accordance with the Privacy Act 1988 (Cth)</li>
+        <li>Employ support workers with valid NDIS Worker Screening clearances</li>
+        <li>Maintain appropriate insurances including public liability and professional indemnity</li>
+        <li>Follow Sunnyday Carers' incident management, complaints, and feedback procedures</li>
+        <li>Report any notifiable incidents to the NDIS Quality and Safeguards Commission within required timeframes</li>
+        <li>Provide at least <strong>7 days' written notice</strong> if unable to continue delivering agreed supports</li>
+      </ul>
+    </div>
+
+    <!-- Participant rights -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">6</div> Participant Rights &amp; Responsibilities</div>
+      <div class="ag-sub" style="margin-top:0">Your rights under this agreement</div>
+      <ul class="ag-list check">
+        <li>Make decisions about the supports you receive and how they are delivered</li>
+        <li>Choose who provides your supports and change providers with reasonable notice</li>
+        <li>Have your privacy, dignity, and cultural identity respected</li>
+        <li>Make a complaint at any time without fear of negative consequences</li>
+        <li>Receive a copy of this agreement and any changes to it</li>
+        <li>Contact the NDIS Quality and Safeguards Commission at any time — 1800 035 544</li>
+      </ul>
+      <div class="ag-sub">Your responsibilities</div>
+      <ul class="ag-list">
+        <li>Notify Sunnyday Carers if you cannot attend a scheduled support session (48 hours notice preferred)</li>
+        <li>Inform Sunnyday Carers of relevant changes to your NDIS plan, contact details, or living arrangements</li>
+        <li>Treat Sunnyday Carers staff with courtesy and respect</li>
+        <li>Provide a safe and respectful environment for support workers visiting your home</li>
+      </ul>
+    </div>
+
+    <!-- Cancellations -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">7</div> Cancellations &amp; Short-Notice Policy</div>
+      <div class="ag-p">Consistent with the NDIS Pricing Arrangements, Sunnyday Carers may charge for a cancelled support if the participant or their representative provides less than <strong>2 clear business days' notice</strong> (short-notice cancellation). The cancellation rate is 100% of the agreed fee for the support session.</div>
+      <div class="ag-p">Cancellations made with more than 2 clear business days' notice will not incur a fee. Sunnyday Carers will not charge for cancellations caused by the provider.</div>
+    </div>
+
+    <!-- Ending the agreement -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">8</div> Ending or Changing this Agreement</div>
+      <div class="ag-p">Either party may end this agreement by providing <strong>14 days written notice</strong>. If the participant's safety is at risk, Sunnyday Carers may suspend services with immediate effect and will work with the participant, their representative, and the NDIS to arrange alternative supports.</div>
+      <div class="ag-p">Any changes to this agreement must be agreed to in writing by both parties. A review of this agreement will occur at minimum every 12 months or when the participant's NDIS plan changes.</div>
+    </div>
+
+    <!-- Complaints -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">9</div> Complaints &amp; Feedback</div>
+      <div class="ag-p">Sunnyday Carers welcomes feedback and is committed to resolving complaints promptly and fairly. You may raise a complaint by:</div>
+      <ul class="ag-list">
+        <li>Speaking directly to your support worker or house manager</li>
+        <li>Contacting our Participant Experience team: <strong>1300 786 692</strong></li>
+        <li>Emailing <strong>feedback@sunnydaycarers.com.au</strong></li>
+        <li>Using the NDIS Commission's online complaints form at <strong>ndiscommission.gov.au</strong></li>
+        <li>Calling the NDIS Commission directly: <strong>1800 035 544</strong></li>
+      </ul>
+    </div>
+
+    <!-- Consent & privacy -->
+    <div class="ag-section">
+      <div class="ag-section-title"><div class="ag-section-num">10</div> Privacy &amp; Information Sharing</div>
+      <div class="ag-p">Sunnyday Carers will collect, use, and store personal information in accordance with the <strong>Privacy Act 1988 (Cth)</strong> and the Australian Privacy Principles. Information about the participant will only be shared with:</div>
+      <ul class="ag-list">
+        <li>NDIS support workers and coordinators involved in delivering supports</li>
+        <li>The NDIS (NDIA) as required for plan management and claiming</li>
+        <li>Health practitioners, emergency services, or legal authorities where required by law or to prevent harm</li>
+        <li>Other service providers nominated by the participant</li>
+      </ul>
+      <div class="ag-p last">The participant's personal information will not be used for marketing purposes or shared with third parties without consent.</div>
+    </div>
+
+    <!-- Signature block -->
+    <div class="ag-section" style="margin-bottom:0">
+      <div class="ag-section-title"><div class="ag-section-num">11</div> Agreement &amp; Signatures</div>
+      <div class="ag-alert ag-alert-info" style="margin-bottom:16px">
+        <i class="ti ti-info-circle"></i>
+        By signing below, both parties confirm they have read and understood this agreement, and agree to its terms. A copy of the signed agreement will be provided to the participant and retained on file by Sunnyday Carers.
+      </div>
+      <div class="sig-grid">
+        <div class="sig-block">
+          <div class="sig-party">Participant / Authorised Representative</div>
+          <div class="sig-canvas-wrap"><span><i class="ti ti-writing" style="margin-right:5px;font-size:14px;vertical-align:-2px"></i>Click to sign (or print and sign)</span></div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" id="sig-part-name" type="text" placeholder="Full name (print)">
+            <div class="sig-label">Full name (printed)</div>
+          </div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" id="sig-part-date" type="text" placeholder="DD / MM / YYYY">
+            <div class="sig-label">Date signed</div>
+          </div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" id="sig-part-rel" type="text" placeholder="e.g. Self / Parent / Guardian">
+            <div class="sig-label">Relationship to participant</div>
+          </div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-party">On behalf of Sunnyday Carers Pty Ltd</div>
+          <div class="sig-canvas-wrap"><span><i class="ti ti-writing" style="margin-right:5px;font-size:14px;vertical-align:-2px"></i>Authorised signatory</span></div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" id="sig-prov-name" type="text" placeholder="Full name (print)" value="Sarah Mitchell">
+            <div class="sig-label">Full name (printed)</div>
+          </div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" id="sig-prov-date" type="text" placeholder="DD / MM / YYYY">
+            <div class="sig-label">Date signed</div>
+          </div>
+          <div class="sig-line-wrap">
+            <input class="sig-line" type="text" value="Support Coordinator" readonly>
+            <div class="sig-label">Title / position</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ag-body -->
+
+  <!-- Footer -->
+  <div class="ag-footer">
+    <div>
+      <strong>Sunnyday Carers Pty Ltd</strong> · ABN 47 123 456 789 · NDIS Reg. 4050052819<br>
+      Level 2, 88 Parramatta Rd, Parramatta NSW 2150 · 1300 786 692 · intake@sunnydaycarers.com.au
+    </div>
+    <div style="text-align:right">
+      <strong>Page 1 of 1</strong><br>
+      Version 3.2 · June 2026
+    </div>
+  </div>
+
+</div><!-- /agreement -->
+</div><!-- /page-shell -->
+
+<script>
+// ── URL param prefill ─────────────────────────────────────────────────────────
+(function prefill() {
+  const params = new URLSearchParams(window.location.search);
+  const name     = params.get('name') || '';
+  const ndis     = params.get('ndis') || '';
+  const dob      = params.get('dob') || '';
+  const planEnd  = params.get('planEnd') || '';
+  const type     = params.get('type') || 'sil-cp';
+  const start    = params.get('start') || '';
+
+  // Participant fields
+  setText('p-name',  name  || 'Participant name');
+  setText('p-ndis',  ndis  || 'NDIS number');
+  setText('p-dob',   dob   || 'Date of birth');
+  setText('p-start', formatDate(start) || 'Enter start date');
+  setText('p-end',   planEnd || 'Enter end date');
+
+  // Signature pre-fill
+  const sigName = document.getElementById('sig-part-name');
+  if (sigName && name) sigName.placeholder = name;
+
+  // Agreement type
+  const isSilOnly = type === 'sil';
+  if (isSilOnly) {
+    document.getElementById('doc-type-heading').textContent = 'SIL SERVICE AGREEMENT';
+    document.querySelector('.ag-doc-sub').textContent = 'Supported Independent Living';
+    document.getElementById('toolbar-doc-label').textContent = 'Service Agreement · SIL';
+    document.getElementById('cp-section').style.display = 'none';
+    document.getElementById('cp-provider-block').style.display = 'none';
+    document.getElementById('cp-fee-row').style.display = 'none';
+  }
+
+  // Reference number
+  const now = new Date();
+  document.getElementById('ref-year').textContent = now.getFullYear();
+  document.getElementById('ref-seq').textContent = String(Math.floor(Math.random() * 9000) + 1000);
+
+  // Today's date in provider sig
+  const today = now.toLocaleDateString('en-AU', {day:'2-digit', month:'2-digit', year:'numeric'}).replace(/\//g,' / ');
+  document.getElementById('sig-prov-date').placeholder = today;
+})();
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  el.classList.toggle('empty', !val);
+}
+
+function formatDate(str) {
+  if (!str) return '';
+  const d = new Date(str);
+  if (isNaN(d)) return str;
+  return d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+}
+
+// ── Edit mode ─────────────────────────────────────────────────────────────────
+let editing = false;
+
+function toggleEdit() {
+  editing = !editing;
+  document.querySelectorAll('.editable').forEach(el => {
+    el.contentEditable = editing ? 'true' : 'false';
+  });
+  document.querySelectorAll('.sig-line').forEach(el => {
+    el.readOnly = !editing && el !== document.getElementById('sig-part-name') && el !== document.getElementById('sig-part-date') && el !== document.getElementById('sig-part-rel') && el !== document.getElementById('sig-prov-name') && el !== document.getElementById('sig-prov-date');
+  });
+  document.getElementById('editBar').classList.toggle('hidden', !editing);
+  const btn = document.getElementById('editToggleBtn');
+  btn.innerHTML = editing ? '<i class="ti ti-check"></i> Done' : '<i class="ti ti-edit"></i> Edit';
+  document.getElementById('toolbar-status').textContent = editing ? 'Editing' : 'Draft';
+  document.getElementById('toolbar-status').className = 'badge ' + (editing ? 'badge-sky' : 'badge-gold');
+  // make sig lines always editable
+  ['sig-part-name','sig-part-date','sig-part-rel','sig-prov-name','sig-prov-date'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.readOnly = false;
+  });
+}
+
+// Make sig lines always editable (not gated by edit mode)
+document.addEventListener('DOMContentLoaded', () => {
+  ['sig-part-name','sig-part-date','sig-part-rel','sig-prov-name','sig-prov-date'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.readOnly = false;
+  });
+});
+</script>
+</body>
+</html>
