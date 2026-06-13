@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import { participantService } from '../services/api';
 import { Participant } from '../types';
 
 export const DashboardPage = () => {
-  const { user, logout } = useAuth();
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -31,25 +29,15 @@ export const DashboardPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">
-              Welcome, {user?.first_name} {user?.last_name}
-            </p>
+            <p className="text-gray-600">Simple participant manager</p>
           </div>
           <div className="flex gap-3">
-            {user?.role === 'admin' && (
-              <a
-                href="/admin/dashboard"
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
-              >
-                Admin Dashboard
-              </a>
-            )}
-            <button
-              onClick={logout}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+            <a
+              href="/participants/new"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
-              Logout
-            </button>
+              Add Participant
+            </a>
           </div>
         </div>
       </header>
